@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
         num_to_factor /= 2;
     }
 
-    // Remaining prime factors are odd numbers from 3 to sqrt(n).
+    // Remaining prime factors are odd numbers from 3 to sqrt(n), not n/2.
     for(int i = 3; i <= sqrt(num_to_factor); i += 2) {
         while(num_to_factor % i == 0) {
             prime_factors.insert(i);

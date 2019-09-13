@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    // Print the result.
+    // Print the result out.
     cout << max_palindrome << endl;
     return 0;
 }

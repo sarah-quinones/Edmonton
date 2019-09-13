@@ -7,7 +7,7 @@ using namespace std;
 long long product(string_view s, int start, int n) {
     long long prod = 1;
     for(auto it = s.begin() + start; it < (s.begin() + start + n); it++) {
-        auto index = distance(s.begin(), it); 
+        auto index = distance(s.begin(), it); // Gets index from beginning of container. 
         prod *= (s[index] - '0');
     }
     return prod;

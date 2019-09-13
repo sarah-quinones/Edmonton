@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 
     // Will loop till we hit our specific break condition.
     while(true) {
-        int fibn = fib(index++);
+        int fibn = fib(index++); // Increment index here to save a line.
 
         // If our number is greater than 4 million we stop here.
         if(fibn >= 4'000'000) break;
