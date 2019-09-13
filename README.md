@@ -11,7 +11,9 @@ A very Canadian pun, playing off the fact that the hockey team of Edmonton is ca
 
 The problems are organized in folders using numbers corresponding to the relevant question. Each comes with a collection of one or more `*.cpp` files as well as a simple makefile to automatically build the program with using the `gcc-g++` compiler.
 
-Some of the problems may require additonal header only libaries in regards to large integers, which are included in the headers folder.
+Some of the problems may require additonal header only libaries in regards to large integers, which are included in the headers folder. 
+
+The template folder contains a basic cpp file with prefilled starting stuff like the relevant headers, namespace and main function to make it quick to start a new problem, as well as a basic makefile that can be used to compile the project.
 
 ### Cheating
 
