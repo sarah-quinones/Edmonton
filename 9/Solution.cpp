@@ -18,7 +18,7 @@ constexpr bool sums_to_thousand(int a, int b, int c) {
 }
 
 int main(int argc, char* argv[]) {
-    // We can brute force the rest using a simple check. 
+    // We can brute force the rest using a simple check.
     for(int a = 1; a <= 1000; a++) {
         for(int b = a; b <= 1000; b++) {
             for(int c = a; c <= 1000; c++) {
