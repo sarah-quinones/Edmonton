@@ -1,10 +1,13 @@
 #include <iostream>
-#include <vector>
+#include <map>
 #include <cmath>
+#include <string>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/lexical_cast.hpp>
 
 using namespace std;
 using boost::multiprecision::cpp_int;
+using boost::lexical_cast;
 
 // Generate the n'th term in the Fibonacci sequence.
 cpp_int fib(cpp_int n){
@@ -22,9 +25,11 @@ cpp_int fib(cpp_int n){
 
 int main(int argc, char* argv[]) {
     int index = 1;
-    while(index < 1000) {
-        cout << fib(index++) << endl;
+    int num_digits = 0;
+    while(num_digits != 1000) {
+        string s = lexical_cast<string>(fib(index++));
+        num_digits = s.size();
     }
-    cout << index << endl;
+    cout << (index - 1) << endl;
     return 0;
 }
