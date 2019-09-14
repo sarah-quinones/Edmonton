@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <boost/multiprecision/cpp_int.hpp>
 
 using namespace std;
