@@ -10,7 +10,7 @@ The factorial function is a bit updated to store previous results so it goes qui
 Using boost's large nber library so it makes it easier for us.
 */
 
-// Generate the n'th term for the fib sequence.
+// Generate the n'th term for the factorial sequence.
 cpp_int factorial(int n) {
     if(n > 1) {
         return n * factorial(n - 1);
