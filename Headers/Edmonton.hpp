@@ -5,7 +5,6 @@
 // Uses templates so it can be easy to get correct number type, including but not limited to boost.
 
 namespace Edmonton {
-
     // Generate the n'th term in the Fibonacci sequence.
     template <typename T>
     T fib(T n) {
