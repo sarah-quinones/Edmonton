@@ -12,6 +12,7 @@ int main(int argc, char* argv[]) {
     while(irrational.size() < 1'000'000) {
         irrational += to_string(num++);
     }
+    
     // We account for the offset in char array.
     product = product * getDigit(irrational[0]) * getDigit(irrational[9]) * getDigit(irrational[99])  * getDigit(irrational[999])  * getDigit(irrational[9999]) * getDigit(irrational[99999]) * getDigit(irrational[999999]);
     cout << product << endl;
