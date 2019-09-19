@@ -13,7 +13,7 @@ string lastN(string input, int n) {
 
 int main(int argc, char *argv[]) {
 	cpp_int sum = 0;
-	for (cpp_int i = 1; i < 1001; i++) {
+	for(cpp_int i = 1; i < 1001; i++) {
 		sum += boost::multiprecision::pow(i, (int)i);
 	}
 	cout << lastN(sum.str(), 10) << endl;
