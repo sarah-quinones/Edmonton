@@ -14,6 +14,7 @@ cpp_int factorial(cpp_int n) {
 
 // Returns the sum of the factorials of the digits of a number.
 cpp_int sumDigitsFactorial(cpp_int n) {
+    
     cpp_int sum = 0;
     while(n) {
         sum += factorial(n % 10);
