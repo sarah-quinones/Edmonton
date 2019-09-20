@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 				d_2 *= getValue(y + i, x - i);
 			}
 			// Apparantly you can only pass two items to std::max().
-			max_product = max(max(max(max(h_p, v_p), d_1), d_2), max_product);
+			max_product = max<int, int>(max<int, int>(max<int, int>(max<int, int>(h_p, v_p), d_1), d_2), max_product);
 		}
 	}
 	cout << max_product << endl;
