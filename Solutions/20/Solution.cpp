@@ -6,7 +6,7 @@ using boost::multiprecision::cpp_int;
 
 // Returns n!
 cpp_int factorial(cpp_int n) {
-	if (n == 0) {
+	if(n == 0) {
 		return 1;
 	}
 	return n * factorial(n - 1);
@@ -14,7 +14,7 @@ cpp_int factorial(cpp_int n) {
 
 cpp_int sum_of_digits(cpp_int num) {
 	cpp_int sum = 0;
-	while (num) {
+	while(num) {
 		sum += num % 10;
 		num /= 10;
 	}

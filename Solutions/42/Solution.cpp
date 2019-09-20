@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
 	vector<string> words;
 	istream_iterator<string> end, start(input);
 	copy(start, end, back_inserter(words));
-
 	// Go through the whole vector and check if score is triangular.
 	int tri_count = 0;
 	for(unsigned int i = 0; i < words.size(); i++) {
@@ -37,7 +36,6 @@ int main(int argc, char *argv[]) {
 			tri_count++;
 		}
 	}
-
 	cout << tri_count << endl;
 	return 0;
 }

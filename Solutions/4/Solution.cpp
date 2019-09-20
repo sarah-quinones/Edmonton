@@ -24,7 +24,6 @@ int main(int argc, char *argv[]) {
 		}
 		return (r == t) ? true : false;
 	};
-
 	// Loop through all products and check maximum palindrome.
 	int max_palindrome = 0;
 	for(int i = 100; i < 1000; i++) {
@@ -34,7 +33,6 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-
 	// Print the result out.
 	cout << max_palindrome << endl;
 	return 0;

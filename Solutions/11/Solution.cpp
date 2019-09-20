@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 	unsigned int max_product = 0;
 	for(unsigned int y = 0; y < 17; y++) {
 		for(unsigned int x = 0; x < 17; x++) {
-			// Horionztal, Vertical, Diagonal 1, Diagonal 2 products with current grid square as first number.
+			// Horizontal, Vertical, Diagonal 1, Diagonal 2 products with current grid square as first number.
 			unsigned int h_p = 1, v_p = 1, d_1 = 1, d_2 = 1;
 			for(unsigned int i = 0; i < 4; i++) {
 				h_p *= getValue(y, x + i);

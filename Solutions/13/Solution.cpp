@@ -15,10 +15,8 @@ int main(int argc, char *argv[]) {
 	vector<cpp_int> numbers;
 	istream_iterator<cpp_int> end, start(input);
 	copy(start, end, back_inserter(numbers));
-
 	// Accumulate the result and put it into a variable.
 	cpp_int result = accumulate(numbers.begin(), numbers.end(), (cpp_int)0);
-
 	// Print the first 10 digits.
 	while(cpp_int(result / (cpp_int)pow(10, 10)) != 0) {
 		result = result / 10;

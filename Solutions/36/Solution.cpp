@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
 		}
 		return (r == t) ? true : false;
 	};
-
 	// Loop through all products and check maximum palindrome.
 	int sum = 0;
 	for(int i = 1; i < 1'000'000; i++) {

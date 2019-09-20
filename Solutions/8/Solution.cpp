@@ -4,8 +4,7 @@
 
 using namespace std;
 
-// Function that will take a string and get the product of the integers in the
-// given range. Long long for overflow.
+// Function that will take a string and get the product of the integers in the given range. Long long for overflow.
 long long product(string_view s, int start, int n) {
 	long long prod = 1;
 	for(auto it = s.begin() + start; it < (s.begin() + start + n); it++) {

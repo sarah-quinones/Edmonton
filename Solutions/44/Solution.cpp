@@ -1,6 +1,7 @@
-#include <climits>
+#include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <set>
 
 using namespace std;
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
 		pentaNums.emplace(pentagonal(n));
 	}
 	// Loop through the pentagonal numbers and find the sum and differences, and check if they are valid.
-	long long D = LONG_LONG_MAX;
+	long long D = LLONG_MAX;
 	for(const auto &j : pentaNums) {
 		for(const auto &k : pentaNums) {
 			if(isPentagonal(j + k) && isPentagonal(abs(k - j))) {
