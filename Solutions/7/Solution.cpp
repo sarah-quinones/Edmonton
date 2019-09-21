@@ -5,7 +5,7 @@
 using namespace std;
 
 // When checking for prime numbers we only need to go till sqrt(n).
-constexpr bool is_prime(int n) {
+bool is_prime(int n) {
 	for(int i = 2; i <= sqrt(n); i++) {
 		if(n % i == 0) {
 			return false;
