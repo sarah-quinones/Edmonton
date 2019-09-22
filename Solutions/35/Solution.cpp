@@ -5,7 +5,14 @@
 using namespace std;
 
 /*
+The following function was folded into the code below, but is here for utility later.
 
+int rotateNum(int n) {
+    int l = floor(n / pow(10, floor(log10(n))));
+    int r = n % (int)pow(10, floor(log10(n)));
+    r *= 10;
+    return r + l;
+}
 */
 
 // Checks if all rotations of the number are prime. Just a clever optimization of the rotateNum function I had in an earlier iteration.
