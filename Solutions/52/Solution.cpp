@@ -1,3 +1,4 @@
+#include "../../Headers/Edmonton.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -19,7 +20,7 @@ int main(int argc, char *argv[]) {
 		for(auto &n : nums) {
 			sort(n.begin(), n.end());
 		}
-		if(nums[0] == nums[1] && nums[1] == nums[2] && nums[2] == nums[3] && nums[3] == nums[4] && nums[4] == nums[5]) {
+		if(Edmonton::all_equal(nums.begin(), nums.end())) {
 			cout << i << endl;
 			break;
 		}
