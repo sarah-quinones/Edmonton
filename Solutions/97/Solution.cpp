@@ -9,10 +9,10 @@ cpp_int mPow(cpp_int base, long long exponent, long long modulus) {
 	cpp_int result = 1;
 	while(exponent > 0) {
 		if(exponent % 2 == 1) {
-			result = (result * base) % modulus;
+			result *= base % modulus;
 		}
 		exponent >>= 1;
-		base = (base * base) % modulus;
+		base *= base % modulus;
 	}
 	return result;
 }
