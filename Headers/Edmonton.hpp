@@ -78,6 +78,23 @@ namespace Edmonton {
 		return result;
 	}
 
+	// Get vector of bool - containing true at the prime indexes. Alternative to above function.
+	std::vector<bool> primesUpto(int N) {
+		// Use the Sieve of Eratosthenes
+		std::vector<bool> primes(N, false);
+		primes[0] = primes[1] = false;
+		std::fill(primes.begin() + 2, primes.end(), true);
+		static const long long int sqrtLimit = std::sqrt(N) + 1;
+		for(std::size_t i = 2; i < sqrtLimit; ++i) {
+			if(primes[i]) {
+				for(std::size_t j = i + i; j < N; j += i) {
+					primes[j] = false;
+				}
+			}
+		} // namespace Edmonton
+		return primes;
+	}
+
 	// Given a pair of iterators, scan the container and confirm that all items in it are the same value.
 	template<typename ForwardIterator>
 	constexpr bool all_equal(ForwardIterator first, ForwardIterator last) {
