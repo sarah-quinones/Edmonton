@@ -39,6 +39,15 @@ namespace Edmonton {
 		return true;
 	}
 
+	// Check if the number given is a prime by scanning a vector array. Make sure the types match.
+	template<typename T>
+	bool isPrime(T n, std::vector<T> primes) {
+		if(find(primes.begin(), primes.end(), n) != primes.end()) {
+			return true;
+		}
+		return false;
+	}
+
 	// Generate the primes upto n using the Sieve of Eratosthenes.
 	template<typename T>
 	std::vector<T> generatePrimes(T n) {
