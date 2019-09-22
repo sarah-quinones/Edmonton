@@ -8,7 +8,7 @@
 using namespace std;
 
 /*
-Since this problem is the same as #67, there's no point bruteforcing this when I can't bruteforce that one. We just need to realize that instead of going up -> down, we can go opposite way.
+Since this problem is the same as #18, there's no point bruteforcing this when I can't bruteforce that one. We just need to realize that instead of going up -> down, we can go opposite way.
 I.e. Read everything into the vectors as usual, and then add the larger of the two numbers to the number above it for each element in the vector. That way the one number in the first vector
 will be equal to the maximum path sum that we need to take.
 */
