@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Check if a number is pandigital.
 bool isPandigital(long n) {
 	string b = "123456789";
 	string r = to_string(n);
