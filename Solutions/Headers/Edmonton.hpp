@@ -38,10 +38,19 @@ namespace Edmonton {
 		return true;
 	}
 
-	// Check if the number given is a prime by scanning a vector array. Make sure the types match.
+	// Check if the number given is a prime by scanning a vector array of all primes. Make sure the types match.
 	template<typename T>
 	bool isPrime(T n, std::vector<T> primes) {
 		if(find(primes.begin(), primes.end(), n) != primes.end()) {
+			return true;
+		}
+		return false;
+	}
+
+	// Check if the number is a prime by scanning a vector of bools that are flagged at the relevant index.
+	template<typename T>
+	bool isPrime(T n, std::vector<bool> primes) {
+		if(primes[n] == 1) {
 			return true;
 		}
 		return false;
@@ -77,7 +86,7 @@ namespace Edmonton {
 		return result;
 	}
 
-	// Get vector of bool - containing true at the prime indexes and false otherwise.
+	// Get vector of int - containing true at the prime indexes and false otherwise.
 	std::vector<bool> primesUpto(int N) {
 		// Use the Sieve of Eratosthenes
 		std::vector<bool> primes(N, false);
@@ -122,4 +131,4 @@ namespace Edmonton {
 		}
 		return result;
 	}
-}
+} // namespace Edmonton
