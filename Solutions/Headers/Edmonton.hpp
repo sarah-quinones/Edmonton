@@ -5,7 +5,6 @@
 
 // A collection of useful functions that I came up with when solving these problems and that are used often.
 // Uses templates so it can be easy to get correct number type, including but not limited to boost.
-
 namespace Edmonton {
 	// Generate the n'th term in the Fibonacci sequence.
 	template<typename T>
@@ -91,7 +90,7 @@ namespace Edmonton {
 					primes[j] = false;
 				}
 			}
-		} // namespace Edmonton
+		}
 		return primes;
 	}
 
@@ -126,4 +125,4 @@ namespace Edmonton {
 		}
 		return result;
 	}
-} // namespace Edmonton
+}
