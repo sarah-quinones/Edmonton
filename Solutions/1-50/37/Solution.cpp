@@ -4,7 +4,7 @@
 
 using namespace std;
 
-constexpr bool isTrunctable(int n, vector<bool> &primes) {
+constexpr bool isTrunctable(int n, vector<int> &primes) {
 	for(int i = 10; i < n; i *= 10) {
 		if(!primes[n % i]) {
 			return false;
@@ -19,7 +19,7 @@ constexpr bool isTrunctable(int n, vector<bool> &primes) {
 }
 
 int main() {
-	vector<bool> primes = Edmonton::primesUpto(1'000'000);
+	vector<int> primes = Edmonton::generatePrimes(1'000'000, false);
 	int sum = 0;
 	for(int n = 11; n < primes.size(); n += 2) {
 		if(isTrunctable(n, primes)) {

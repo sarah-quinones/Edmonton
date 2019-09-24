@@ -3,8 +3,10 @@
 #include <utility>
 #include <vector>
 
-// A collection of useful functions that I came up with when solving these problems and that are used often.
-// Uses templates so it can be easy to get correct number type, including but not limited to boost.
+/*
+A collection of useful functions that I came up with when solving these problems and that are used often.
+Uses templates so it can be easy to get correct number type, including but not limited to boost.
+*/
 namespace Edmonton {
 	// Generate the n'th term in the Fibonacci sequence.
 	template<typename T>
@@ -47,9 +49,9 @@ namespace Edmonton {
 		return false;
 	}
 
-	// Check if the number is a prime by scanning a vector of bools that are flagged at the relevant index.
+	// Check if the number is a prime by scanning a vector of numbers that are flagged at the relevant index if prime.
 	template<typename T>
-	bool isPrime(T n, std::vector<bool> primes) {
+	bool isPrime(T n, std::vector<T> primes, bool usingIndexes) {
 		if(primes[n] == 1) {
 			return true;
 		}
@@ -86,17 +88,20 @@ namespace Edmonton {
 		return result;
 	}
 
-	// Get vector of int - containing true at the prime indexes and false otherwise.
-	std::vector<bool> primesUpto(int N) {
+	// Get vector of type T - containing true at the prime indexes and false otherwise.
+	template<typename T>
+	std::vector<T> generatePrimes(T N, bool reverse) {
+		int t = (reverse) ? 0 : 1;
+		int f = (reverse) ? 1 : 0;
 		// Use the Sieve of Eratosthenes
-		std::vector<bool> primes(N, false);
-		primes[0] = primes[1] = false;
-		std::fill(primes.begin() + 2, primes.end(), true);
+		std::vector<int> primes(N, f);
+		primes[0] = primes[1] = f;
+		std::fill(primes.begin() + 2, primes.end(), t);
 		static const long long int sqrtLimit = std::sqrt(N) + 1;
 		for(std::size_t i = 2; i < sqrtLimit; ++i) {
 			if(primes[i]) {
 				for(std::size_t j = i + i; j < N; j += i) {
-					primes[j] = false;
+					primes[j] = f;
 				}
 			}
 		}
@@ -114,9 +119,7 @@ namespace Edmonton {
 		return true;
 	}
 
-	/*
-	Generic function to find an element in vector and also its position, returns a pair of a bool and int.
-	*/
+	// Generic function to find an element in vector and also its position, returns a pair of a bool and int.
 	template<typename T>
 	std::pair<bool, int> findInVector(const std::vector<T> &vecOfElements, const T &element) {
 		std::pair<bool, int> result;
@@ -131,4 +134,4 @@ namespace Edmonton {
 		}
 		return result;
 	}
-} // namespace Edmonton
+}
