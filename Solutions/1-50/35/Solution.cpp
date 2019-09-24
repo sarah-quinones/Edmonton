@@ -16,7 +16,7 @@ int rotateNum(int n) {
 */
 
 // Checks if all rotations of the number are prime. Just a clever optimization of the rotateNum function I had in an earlier iteration.
-bool isCircularPrime(int n, const vector<bool> &primes) {
+bool isCircularPrime(int n, const vector<int> &primes) {
 	int left = floor(log10(n)) + 1;
 	int power = pow(10, left) - 1;
 	for(int i = 1; i < left; i++) {
@@ -29,11 +29,11 @@ bool isCircularPrime(int n, const vector<bool> &primes) {
 }
 
 int main(int argc, char *argv[]) {
-	vector<bool> primes = Edmonton::primesUpto(1'000'000);
+	vector<int> primes = Edmonton::generatePrimes(1'000'000, false);
 	int circ_primes = 4;
 	// We start off with the first four single digit primes as circular.
 	for(int i = 11; i < 1'000'000; i += 2) {
-		if(isCircularPrime(i, primes) && primes[i]) {
+		if(isCircularPrime(i, primes) && Edmonton::isPrime<int>(i, primes, true)) {
 			circ_primes++;
 		}
 	}
