@@ -90,7 +90,7 @@ namespace Edmonton {
 					primes[j] = false;
 				}
 			}
-		} // namespace Edmonton
+		}
 		return primes;
 	}
 
@@ -122,4 +122,4 @@ namespace Edmonton {
 		}
 		return result;
 	}
-} // namespace Edmonton
+}
