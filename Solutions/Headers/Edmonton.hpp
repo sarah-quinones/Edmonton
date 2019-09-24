@@ -5,7 +5,6 @@
 
 // A collection of useful functions that I came up with when solving these problems and that are used often.
 // Uses templates so it can be easy to get correct number type, including but not limited to boost.
-
 namespace Edmonton {
 	// Generate the n'th term in the Fibonacci sequence.
 	template<typename T>
@@ -78,7 +77,7 @@ namespace Edmonton {
 		return result;
 	}
 
-	// Get vector of bool - containing true at the prime indexes. Alternative to above function.
+	// Get vector of bool - containing true at the prime indexes and false otherwise.
 	std::vector<bool> primesUpto(int N) {
 		// Use the Sieve of Eratosthenes
 		std::vector<bool> primes(N, false);
@@ -107,10 +106,7 @@ namespace Edmonton {
 	}
 
 	/*
-	Generic function to find an element in vector and also its position.
-	It returns a pair of bool & int i.e.
-	bool : Represents if element is present in vector or not.
-	int : Represents the index of element in vector if its found else -1
+	Generic function to find an element in vector and also its position, returns a pair of a bool and int.
 	*/
 	template<typename T>
 	std::pair<bool, int> findInVector(const std::vector<T> &vecOfElements, const T &element) {
