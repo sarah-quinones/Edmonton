@@ -40,10 +40,10 @@ namespace Edmonton {
 		return true;
 	}
 
-	// Check if the number given is a prime by scanning a vector array of all primes. Make sure the types match.
+	// Check if the number given is in a vector by scanning it and returning if a result is found.
 	template<typename T>
-	bool isPrime(T n, std::vector<T> primes) {
-		if(find(primes.begin(), primes.end(), n) != primes.end()) {
+	bool isInVector(T n, std::vector<T> vec) {
+		if(find(vec.begin(), vec.end(), n) != vec.end()) {
 			return true;
 		}
 		return false;
@@ -51,7 +51,7 @@ namespace Edmonton {
 
 	// Check if the number is a prime by scanning a vector of numbers that are flagged at the relevant index if prime.
 	template<typename T>
-	bool isPrime(T n, std::vector<T> primes, bool usingIndexes) {
+	bool isPrime(T n, std::vector<T> primes) {
 		if(primes[n] == 1) {
 			return true;
 		}

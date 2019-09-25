@@ -1,3 +1,4 @@
+
 #include "../../Headers/Edmonton.hpp"
 #include <cmath>
 #include <iostream>
@@ -11,7 +12,7 @@ For this problem we need to make sure that the distinct number of factors that a
 So in order to optimize this for time/speed we can generate the primes and go through the number, counting the number of prime factors.
 Before we return it we can add it to cache. When we search that number again later on, we have the cached results ready for us. 
 */
-int primeFactorCount(int n, const vector<bool> &primes) {
+int primeFactorCount(int n, const vector<int> &primes) {
 	// We can first check our cache to see if we processed this number before.
 	static unordered_map<int, int> cache;
 	if(cache.find(n) != cache.end()) {
@@ -19,7 +20,7 @@ int primeFactorCount(int n, const vector<bool> &primes) {
 	}
 	int count = 0;
 	for(int i = 2; i <= primes.size(); i++) {
-		if(n % i == 0 && Edmonton::isPrime(i, primes)) {
+		if(n % i == 0 && Edmonton::isPrime<int>(i, primes)) {
 			count++;
 		}
 	}
@@ -28,9 +29,8 @@ int primeFactorCount(int n, const vector<bool> &primes) {
 }
 
 int main(int argc, char *argv[]) {
-	// Generate the list for the first ten-thousand primes so we can use it to count prime factors. Higher numbers are unlikely.
-	vector<bool> primes = Edmonton::primesUpto(10'000);
-	// Minimum starting number.
+	// Generate the list for the first thousand primes so we can use it to count prime factors. Higher numbers are unlikely.
+	vector<int> primes = Edmonton::generatePrimes<int>(1000, false);
 	int j = 210;
 	// Loop till we get to what we need.
 	while(true) {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 				}
 			}
 		}
-		cout << j << endl;
+		j++;
 	}
 	return 0;
 }

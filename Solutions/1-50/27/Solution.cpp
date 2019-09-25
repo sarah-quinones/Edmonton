@@ -5,8 +5,6 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 	int a_max = 0, b_max = 0, n_max = 0;
-	// Get the first couple primes.
-	vector<int> primes = Edmonton::generatePrimes<int>(80'000);
 	// Loop through and brute force everything, keeping track of the chains.
 	for(int a = -1000; a <= 1000; a++) {
 		for(int b = -1000; b <= 1000; b++) {

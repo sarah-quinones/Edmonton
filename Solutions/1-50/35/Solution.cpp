@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	int circ_primes = 4;
 	// We start off with the first four single digit primes as circular.
 	for(int i = 11; i < 1'000'000; i += 2) {
-		if(isCircularPrime(i, primes) && Edmonton::isPrime<int>(i, primes, true)) {
+		if(isCircularPrime(i, primes) && Edmonton::isPrime<int>(i, primes)) {
 			circ_primes++;
 		}
 	}
