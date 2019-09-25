@@ -29,7 +29,7 @@ namespace Edmonton {
 		return (r == t) ? true : false;
 	}
 
-	// When checking for prime numbers we only need to go till square root of n.
+	// When checking for prime numbers we only need to go till square root of N.
 	template<typename T>
 	bool isPrime(T n) {
 		for(T i = 2; i <= sqrt(n); i++) {
@@ -58,7 +58,7 @@ namespace Edmonton {
 		return false;
 	}
 
-	// Generate the primes upto n using the Sieve of Eratosthenes.
+	// Generate the primes upto N using the Sieve of Eratosthenes.
 	template<typename T>
 	std::vector<T> generatePrimes(T n) {
 		std::vector<T> result = std::vector<T>();
@@ -93,7 +93,7 @@ namespace Edmonton {
 	std::vector<T> generatePrimes(T N, bool reverse) {
 		int t = (reverse) ? 0 : 1;
 		int f = (reverse) ? 1 : 0;
-		// Use the Sieve of Eratosthenes
+		// Use the Sieve of Eratosthenes.
 		std::vector<int> primes(N, f);
 		primes[0] = primes[1] = f;
 		std::fill(primes.begin() + 2, primes.end(), t);
@@ -119,11 +119,11 @@ namespace Edmonton {
 		return true;
 	}
 
-	// Generic function to find an element in vector and also its position, returns a pair of a bool and int.
+	// Generic function to find an element in vector and also its position, returns a pair of a bool and integer.
 	template<typename T>
 	std::pair<bool, int> findInVector(const std::vector<T> &vecOfElements, const T &element) {
 		std::pair<bool, int> result;
-		// Find given element in vector
+		// Find given element in vector.
 		auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
 		if(it != vecOfElements.end()) {
 			result.second = distance(vecOfElements.begin(), it);
@@ -133,5 +133,16 @@ namespace Edmonton {
 			result.second = -1;
 		}
 		return result;
+	}
+
+	// Obtains the sum of the digits of a given number.
+	template<typename T>
+	constexpr int sumOfDigits(T n) {
+		T sum = 0;
+		while(n != 0) {
+			sum += n % 10;
+			n /= 10;
+		}
+		return sum;
 	}
 }
