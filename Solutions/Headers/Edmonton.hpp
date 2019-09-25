@@ -110,7 +110,7 @@ namespace Edmonton {
 
 	// Given a pair of iterators, scan the container and confirm that all items in it are the same value.
 	template<typename ForwardIterator>
-	constexpr bool all_equal(ForwardIterator first, ForwardIterator last) {
+	constexpr bool allEqual(ForwardIterator first, ForwardIterator last) {
 		for(auto it = first++; it != last; ++it) {
 			if(*first != *it) {
 				return false;
@@ -145,5 +145,16 @@ namespace Edmonton {
 			n /= 10;
 		}
 		return sum;
+	}
+
+	// Obtains the number of digits in a given number.
+	template<typename T, typename U>
+	T digitCount(U n) {
+		T count = 0;
+		while(n != 0) {
+			n /= 10;
+			count++;
+		}
+		return count;
 	}
 }

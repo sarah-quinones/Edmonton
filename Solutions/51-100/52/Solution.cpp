@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 		for(auto &n : nums) {
 			sort(n.begin(), n.end());
 		}
-		if(Edmonton::all_equal(nums.begin(), nums.end())) {
+		if(Edmonton::allEqual(nums.begin(), nums.end())) {
 			cout << i << endl;
 			break;
 		}
