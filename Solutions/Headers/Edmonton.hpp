@@ -136,11 +136,12 @@ namespace Edmonton {
 	}
 
 	// Obtains the sum of the digits of a given number.
-	template<typename T>
-	constexpr int sumOfDigits(T n) {
+	template<typename T, typename U>
+	T sumOfDigits(U n) {
 		T sum = 0;
 		while(n != 0) {
-			sum += n % 10;
+			auto d = n % 10;
+			sum += (T)d;
 			n /= 10;
 		}
 		return sum;
