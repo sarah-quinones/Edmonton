@@ -15,8 +15,8 @@ Before we return it we can add it to cache. When we search that number again lat
 int primeFactorCount(int n, const vector<int> &primes) {
 	// We can first check our cache to see if we processed this number before.
 	static unordered_map<int, int> cache;
-	if(cache.find(n) != cache.end()) {
-		return cache.at(n);
+	if(auto it = cache.find(n); it != cache.end()) {
+		return (*it).second;
 	}
 	int count = 0;
 	for(int i = 2; i <= primes.size(); i++) {
