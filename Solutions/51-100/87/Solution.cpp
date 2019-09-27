@@ -23,9 +23,10 @@ int main(int argc, char *argv[]) {
 		for(int j = 0; j < primesCU.size(); j++) {
 			for(int k = 0; k < primesQD.size(); k++) {
 				auto val = genVal(primesSQ[i], primesCU[j], primesQD[k]);
-				if(val < 50'000'000) {
-					created[val] = 1;
+				if(val >= 50'000'000) {
+					break;
 				}
+				created[val] = 1;
 			}
 		}
 	}
