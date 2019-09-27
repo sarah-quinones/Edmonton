@@ -157,4 +157,31 @@ namespace Edmonton {
 		}
 		return count;
 	}
+
+	/*
+	An incredibly quick way to calculate the GCD of two numbers using intrinsics.
+	Mostly was curious on a really fast version of it.
+	https://lemire.me/blog/2013/12/26/fastest-way-to-compute-the-greatest-common-divisor/
+	*/
+	unsigned int gcd(unsigned int u, unsigned int v) {
+		int shift;
+		if(u == 0) {
+			return v;
+		}
+		if(v == 0) {
+			return u;
+		}
+		shift = __builtin_ctz(u | v);
+		u >>= __builtin_ctz(u);
+		do {
+			v >>= __builtin_ctz(v);
+			if(u > v) {
+				unsigned int t = v;
+				v = u;
+				u = t;
+			}
+			v = v - u;
+		} while(v != 0);
+		return u << shift;
+	}
 }
