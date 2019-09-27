@@ -8,15 +8,15 @@ using namespace std;
 /*
 Can just brute-force this in a fairly straight-forward based manner. Just need to take care to use larger numbers.
 */
-constexpr unsigned long long genVal(unsigned long long a, unsigned long long b, unsigned long long c) {
+constexpr unsigned int genVal(unsigned int a, unsigned int b, unsigned int c) {
 	return (a * a) + (b * b * b) + (c * c * c * c);
 }
 
 int main(int argc, char *argv[]) {
 	// Only have to go upto the roots of 50 million.
-	vector<unsigned long long> primesSQ = Edmonton::generatePrimes<unsigned long long>(7081);
-	vector<unsigned long long> primesCU = Edmonton::generatePrimes<unsigned long long>(368);
-	vector<unsigned long long> primesQD = Edmonton::generatePrimes<unsigned long long>(84);
+	vector<unsigned int> primesSQ = Edmonton::generatePrimes<unsigned int>(7081);
+	vector<unsigned int> primesCU = Edmonton::generatePrimes<unsigned int>(368);
+	vector<unsigned int> primesQD = Edmonton::generatePrimes<unsigned int>(84);
 	vector<int> created(50'000'000, 0);
 	// Mark everything off in the vector if we create it.
 	for(int i = 0; i < primesSQ.size(); i++) {
