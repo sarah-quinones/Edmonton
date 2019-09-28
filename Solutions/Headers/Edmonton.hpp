@@ -65,7 +65,7 @@ namespace Edmonton {
 		if(n < 2) {
 			return result;
 		}
-		std::vector<bool> input(n + 1, true);
+		std::vector<int> input(n + 1, 1);
 		// Calculates the upper limit of the numbers to check.
 		T sqrtN = (T)sqrt(n);
 		// Iterate till the square root.
@@ -75,7 +75,7 @@ namespace Edmonton {
 			}
 			// Multiples are marked false.
 			for(T j = i * i; j <= n; j += i) {
-				input[j] = false;
+				input[j] = 0;
 			}
 		}
 		// Add to result vector.
