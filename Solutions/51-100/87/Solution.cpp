@@ -14,15 +14,13 @@ constexpr unsigned int genVal(unsigned int a, unsigned int b, unsigned int c) {
 
 int main(int argc, char *argv[]) {
 	// Only have to go upto the roots of 50 million.
-	vector<unsigned int> primesSQ = Edmonton::generatePrimes<unsigned int>(7081);
-	vector<unsigned int> primesCU = Edmonton::generatePrimes<unsigned int>(368);
-	vector<unsigned int> primesQD = Edmonton::generatePrimes<unsigned int>(84);
+	vector<unsigned int> primes = Edmonton::generatePrimes<unsigned int>(7081);
 	vector<int> created(50'000'000, 0);
 	// Mark everything off in the vector if we create it.
-	for(int i = 0; i < primesSQ.size(); i++) {
-		for(int j = 0; j < primesCU.size(); j++) {
-			for(int k = 0; k < primesQD.size(); k++) {
-				auto val = genVal(primesSQ[i], primesCU[j], primesQD[k]);
+	for(int i = 0; i < primes.size(); i++) {
+		for(int j = 0; j < 75; j++) {	 // 367 is the 74th prime.
+			for(int k = 0; k < 25; k++) { // 83 is the 24th prime.
+				auto val = genVal(primes[i], primes[j], primes[k]);
 				if(val >= 50'000'000) {
 					break;
 				}
