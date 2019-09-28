@@ -21,7 +21,6 @@ namespace Edmonton {
 	template<typename T>
 	bool isPalindrome(T n, T b) {
 		T r = 0, t = n;
-		// Reverse the number.
 		while(n > 0) {
 			r = (r * b) + n % b;
 			n = n / b | 0;
@@ -66,19 +65,15 @@ namespace Edmonton {
 			return result;
 		}
 		std::vector<int> input(n + 1, 1);
-		// Calculates the upper limit of the numbers to check.
 		T sqrtN = (T)sqrt(n);
-		// Iterate till the square root.
-		for(T i = 2; i <= sqrtN; i++) {
+		for(T i = 3; i <= sqrtN; i += 2) {
 			if(!input[i]) {
 				continue;
 			}
-			// Multiples are marked false.
-			for(T j = i * i; j <= n; j += i) {
+			for(T j = i * i; j <= n; j += i * 2) {
 				input[j] = 0;
 			}
 		}
-		// Add to result vector.
 		result.push_back(2);
 		for(T i = 3; i <= n; i += 2) {
 			if(input[i]) {
@@ -93,7 +88,6 @@ namespace Edmonton {
 	std::vector<T> generatePrimes(T N, bool reverse) {
 		int t = (reverse) ? 0 : 1;
 		int f = (reverse) ? 1 : 0;
-		// Use the Sieve of Eratosthenes.
 		std::vector<int> primes(N, f);
 		primes[0] = primes[1] = f;
 		std::fill(primes.begin() + 2, primes.end(), t);
@@ -123,7 +117,6 @@ namespace Edmonton {
 	template<typename T>
 	std::pair<bool, int> findInVector(const std::vector<T> &vecOfElements, const T &element) {
 		std::pair<bool, int> result;
-		// Find given element in vector.
 		auto it = std::find(vecOfElements.begin(), vecOfElements.end(), element);
 		if(it != vecOfElements.end()) {
 			result.second = distance(vecOfElements.begin(), it);
