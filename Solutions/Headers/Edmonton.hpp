@@ -180,7 +180,7 @@ namespace Edmonton {
 
 	// Euler's totient function, requires a vector of primes to work for insane speed increases.
 	template<typename T>
-	T phi(T n, vector<T> &primes) {
+	T phi(T n, std::vector<T> &primes) {
 		T res = n;
 		for(T i = 0; primes[i] * primes[i] <= n; i++) {
 			if(!(n % primes[i])) {
