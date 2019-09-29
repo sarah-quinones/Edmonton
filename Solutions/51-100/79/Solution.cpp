@@ -8,6 +8,7 @@ using namespace std;
 
 /*
 We can model this as a statistics problem by getting the average position of each character, and then sorting them.
+Average position is defined as sum of positions: (0, 1, 2) divided by number of appearances of digit.
 */
 
 // Kinda hackish, but it works.
