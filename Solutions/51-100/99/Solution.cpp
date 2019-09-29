@@ -34,5 +34,6 @@ int main(int argc, char *argv[]) {
 	}
 	int em_index = max_element(temp.begin(), temp.end()) - temp.begin();
 	cout << em_index + 1 << endl;
+	input.close();
 	return 0;
 }

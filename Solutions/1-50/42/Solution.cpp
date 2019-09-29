@@ -37,5 +37,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	cout << tri_count << endl;
+	input.close();
 	return 0;
 }

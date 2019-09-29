@@ -28,5 +28,6 @@ int main(int argc, char *argv[]) {
 		list_sum += ((i + 1) * letterScore(names[i]));
 	}
 	cout << list_sum << endl;
+	input.close();
 	return 0;
 }

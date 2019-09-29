@@ -33,5 +33,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	cout << lines[0][0] << endl;
+	input.close();
 	return 0;
 }

@@ -50,5 +50,6 @@ int main(int argc, char *argv[]) {
 	}
 	// Output result.
 	cout << *min_element(ans.begin(), ans.end()) << endl;
+	input.close();
 	return 0;
 }

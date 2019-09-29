@@ -42,5 +42,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	cout << matrix[0][0] << endl;
+	input.close();
 	return 0;
 }

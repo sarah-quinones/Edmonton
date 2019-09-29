@@ -22,5 +22,6 @@ int main(int argc, char *argv[]) {
 		result = result / 10;
 	}
 	cout << result << endl;
+	input.close();
 	return 0;
 }
