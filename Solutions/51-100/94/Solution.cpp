@@ -1,11 +1,9 @@
-#include <boost/multiprecision/cpp_int.hpp>
 #include <iostream>
 
 using namespace std;
-using boost::multiprecision::cpp_int;
 
 int main(int argc, char *argv[]) {
-	cpp_int zero, side, sum, perimeter, m;
+	unsigned long long zero, side, sum, perimeter, m;
 	zero = 1;
 	side = 1;
 	perimeter = 0;
