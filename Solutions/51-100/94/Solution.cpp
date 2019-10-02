@@ -10,9 +10,12 @@ int main(int argc, char *argv[]) {
 	sum = 0;
 	m = 1;
 	while(perimeter <= 1'000'000'000) {
-		zero = side;
-		side = ((4 * side) - zero + (2 * m));
-		m = (-1) * m;
+		unsigned long long zt = side;
+		unsigned long long st = ((4 * side) - zero + (2 * m));
+		unsigned long long m2 = -1 * m;
+		zero = zt;
+		side = st;
+		m = m2;
 		sum += perimeter;
 		perimeter = (3 * side) - m;
 	}
