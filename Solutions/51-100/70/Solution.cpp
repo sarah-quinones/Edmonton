@@ -1,7 +1,7 @@
 #include "../../Headers/Edmonton.hpp"
 #include <iostream>
 #include <string>
-#include <vector> // 10000000
+#include <vector>
 
 using namespace std;
 
