@@ -11,7 +11,7 @@ using namespace std;
 Problem is straight-forward enough. We read in all the strings into one vector, convert them into integers and calculate difference.
 Next calculate difference in total sum of both vectors. 
 */
-// Convert Roman numerals to decimal integer.
+// Convert Roman Numerals to integer.
 int romanToInt(string s) {
 	unordered_map<char, int> m = {{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
 	int total = 0;
@@ -25,7 +25,7 @@ int romanToInt(string s) {
 	return total;
 }
 
-// Function to convert decimal to Roman Numerals.
+// Function convert integers to Roman Numerals.
 string intToRoman(int number) {
 	int rules[13] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
 	const char *action[13] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
