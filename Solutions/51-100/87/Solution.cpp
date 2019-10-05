@@ -8,6 +8,7 @@ using namespace std;
 /*
 Can just brute-force this in a fairly straight-forward based manner. Just need to take care to use larger numbers.
 */
+
 constexpr unsigned int genVal(unsigned int a, unsigned int b, unsigned int c) {
 	return (a * a) + (b * b * b) + (c * c * c * c);
 }

@@ -17,6 +17,7 @@ We can mirror this on y = x and get solutions going other way.
 
 For special case we can assume O is the right angle and then P and Q are on the axis.
 */
+
 int main(int argc, char *argv[]) {
 	// Iterate through everything by going through all possibilities of P and adding special cases.
 	int result = 7500; // Starting from here for results, minimum amount of special cases.

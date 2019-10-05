@@ -11,6 +11,7 @@ p(n) = p(n – 1)  + p(k – 2) – p(k – 5) – p(k – 7) + p(k – 12) + p(
 Where p(0) = 1 and p(n) = 0 for n < 0..
 and k = m / 2 + 1 (k % 2 == 0) || -m / 2 + 1.
 */
+
 int main(int argc, char *argv[]) {
 	// We will need the generalized pentagonal numbers first.
 	vector<cpp_int> k;

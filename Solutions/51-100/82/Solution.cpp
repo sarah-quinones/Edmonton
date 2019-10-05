@@ -14,6 +14,7 @@ So when we scan a column we do two passes as follows:
 2. Go up the column and see if it is cheaper to go up the column or to use the previous computation instead.
 While we do this for the columns one by one, we go to the left one column and perform computation again, slowly processing each column individually.
 */
+
 int main(int argc, char *argv[]) {
 	// Get input.
 	vector<vector<int>> matrix;

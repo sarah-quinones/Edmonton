@@ -11,6 +11,7 @@ we can get away with a few numbers functions. One that will add numbers with the
 one that will check for palindromes and one that will process a number and keep track of iterations.
 The palindrome function is already made, so we just need to make the other ones.
 */
+
 cpp_int reverseNumber(cpp_int n) {
 	cpp_int re, rv = 0;
 	while(n > 0) {

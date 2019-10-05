@@ -23,6 +23,7 @@ So as long as we get an integer out of b, then by subbing in the other two param
 
 Since p is always even, we can skip all odd numbers and limit our search based on that.
 */
+
 int main(int argc, char *argv[]) {
 	int highest_triplet_count = 0, max_p = 0;
 	for(int p = 2; p <= 1'000; p += 2) {

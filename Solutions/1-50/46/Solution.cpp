@@ -9,6 +9,7 @@ using namespace std;
 Can bruteforce this problem fairly easily by just generating a vector and looping through it, 
 finding the first odd number that was not flagged and outputting it. 
 */
+
 int main(int argc, char *argv[]) {
 	// Just a quick guess that the first number should be somewhere low.
 	vector<int> primes = Edmonton::generatePrimes<int>(10000);

@@ -7,6 +7,7 @@ using namespace std;
 /*
 This is a simple application of Euler's totient function.
 */
+
 int main(int argc, char *argv[]) {
 	vector<unsigned long long> primes = Edmonton::generatePrimes<unsigned long long>(10000);
 	unsigned long long sum = 0;

@@ -9,6 +9,7 @@ using boost::multiprecision::cpp_int;
 /*
 Since the digit count for the numbers scale at an insane rate, we can safely assume that A and B are >= 90 and < 100. Rest can be bruteforced.
 */
+
 int main(int argc, char *argv[]) {
 	int max_digitial_sum = 0;
 	for(int a = 90; a < 100; a++) {

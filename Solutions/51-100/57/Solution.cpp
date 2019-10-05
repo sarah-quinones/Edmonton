@@ -12,6 +12,7 @@ We don't really need to worry about the actual decimals, the numerator and denom
 2. denominator = numerator - denominator
 for each of the expansion/iteration we are testing.
 */
+
 int main(int argc, char *argv[]) {
 	int num_count = 0;
 	cpp_int numerator = 3, denominator = 2;

@@ -6,6 +6,7 @@ using namespace std;
 /*
 Literally identical problem to 31. Just changed the function variable names.
 */
+
 int changeCount(int goal, vector<int> &nums) {
 	vector<int> subnums(goal + 1, 0);
 	subnums[0] = 1; // 1 way to make 0.

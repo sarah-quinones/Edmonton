@@ -11,6 +11,7 @@ using boost::multiprecision::cpp_int;
 /*
 Just a normal bruteforce, we'll generate the first couple dozen thousand cubes, sort them as strings (to match permutations) into a vector, then run a count on them.
 */
+
 int main(int argc, char *argv[]) {
 	vector<string> permutations;
 	// Generate all cubes.

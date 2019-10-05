@@ -12,6 +12,7 @@ using namespace std;
 Just abuse the fact that the exponents can be re-written as algorithms.
 I am not proud of this code.
 */
+
 int main(int argc, char *argv[]) {
 	// Get input.
 	vector<tuple<int, int>> values;

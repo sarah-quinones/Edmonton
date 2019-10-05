@@ -12,6 +12,7 @@ We need to essentially get the total combination of each type of line and multip
 
 So it essentially becomes: (l * w * (l + 1) * (w + 1)) / 4.
 */
+
 constexpr int countRectangles(int l, int w) {
 	return ((l * w * (l + 1) * (w + 1)) / 4);
 }

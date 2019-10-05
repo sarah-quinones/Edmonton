@@ -10,6 +10,7 @@ For this question we can make an interesting observation(s):
 1. Each of the recurring cycles ends once a digit it has encountered before shows up again. 
 2. The number must be odd (and prime) but we won't bother generating primes for this question.
 */
+
 int main(int argc, char *argv[]) {
 	int cycle_length = 0;
 	int max_i = 0;

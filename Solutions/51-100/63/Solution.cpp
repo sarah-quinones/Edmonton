@@ -17,6 +17,7 @@ If our base is x then the maximum it can be is 9 and lowest it can be is 1.
 Then we just need to get maximum value of n, which will be given by taking the log and solving for n >.
 For x = 9, largest possible n = 22, so we have our upperlimits.
 */
+
 int digitCount(cpp_int n) {
 	int digits = 0;
 	while(n) {

@@ -12,6 +12,7 @@ Since this problem is the same as #67, there's no point bruteforcing this when I
 I.e. Read everything into the vectors as usual, and then add the larger of the two numbers to the number above it for each element in the vector. That way the one number in the first vector
 will be equal to the maximum path sum that we need to take.
 */
+
 int main(int argc, char *argv[]) {
 	// Get input.
 	vector<vector<int>> lines;
