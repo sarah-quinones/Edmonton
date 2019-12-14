@@ -29,6 +29,10 @@ License (MIT):
 #ifndef DBG_MACRO_DBG_H
 #define DBG_MACRO_DBG_H
 
+#ifndef DBG_MACRO_NO_WARNING
+#pragma message("WARNING: the 'dbg.h' header is included in your code base")
+#endif // DBG_MACRO_NO_WARNING
+
 #include <algorithm>
 #include <iomanip>
 #include <ios>
@@ -39,6 +43,10 @@ License (MIT):
 #include <tuple>
 #include <type_traits>
 #include <vector>
+
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#include <unistd.h>
+#endif
 
 #if __cplusplus >= 201703L
 #include <optional>
@@ -231,9 +239,7 @@ namespace dbg_macro {
 			decltype(std::declval<std::ostream &>() << std::declval<T>());
 
 		template<typename T>
-		struct has_ostream_operator {
-			static constexpr bool value = is_detected<ostream_operator_t, T>::value;
-		};
+		struct has_ostream_operator : is_detected<ostream_operator_t, T> {};
 
 	} // namespace detail
 
@@ -255,10 +261,8 @@ namespace dbg_macro {
 									   !std::is_enum<T>::value,
 								   bool>::type
 	pretty_print(std::ostream &stream, const T &value) {
-		pretty_print(
-			stream, value,
-			std::integral_constant<bool,
-								   detail::has_ostream_operator<const T &>::value>{});
+		pretty_print(stream, value,
+					 typename detail::has_ostream_operator<const T &>::type{});
 		return true;
 	}
 
