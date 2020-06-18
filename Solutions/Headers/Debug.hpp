@@ -29,11 +29,19 @@ License (MIT):
 #ifndef DBG_MACRO_DBG_H
 #define DBG_MACRO_DBG_H
 
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#define DBG_MACRO_UNIX
+#elif defined(_MSC_VER)
+#define DBG_MACRO_WINDOWS
+#endif
+
 #ifndef DBG_MACRO_NO_WARNING
 #pragma message("WARNING: the 'dbg.h' header is included in your code base")
 #endif // DBG_MACRO_NO_WARNING
 
 #include <algorithm>
+#include <chrono>
+#include <ctime>
 #include <iomanip>
 #include <ios>
 #include <iostream>
@@ -44,18 +52,26 @@ License (MIT):
 #include <type_traits>
 #include <vector>
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#ifdef DBG_MACRO_UNIX
 #include <unistd.h>
 #endif
 
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L || defined(_MSC_VER)
+#define DBG_MACRO_CXX_STANDARD 17
+#elif __cplusplus >= 201402L
+#define DBG_MACRO_CXX_STANDARD 14
+#else
+#define DBG_MACRO_CXX_STANDARD 11
+#endif
+
+#if DBG_MACRO_CXX_STANDARD >= 17
 #include <optional>
 #include <variant>
 #endif
 
-namespace dbg_macro {
+namespace dbg {
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#ifdef DBG_MACRO_UNIX
 	inline bool isColorizedOutputEnabled() {
 		return isatty(fileno(stderr));
 	}
@@ -65,6 +81,8 @@ namespace dbg_macro {
 	}
 #endif
 
+	struct time {};
+
 	namespace pretty_function {
 
 		// Compiler-agnostic version of __PRETTY_FUNCTION__ and constants to
@@ -73,23 +91,67 @@ namespace dbg_macro {
 #if defined(__clang__)
 #define DBG_MACRO_PRETTY_FUNCTION __PRETTY_FUNCTION__
 		static constexpr size_t PREFIX_LENGTH =
-			sizeof("const char *dbg_macro::type_name_impl() [T = ") - 1;
+			sizeof("const char *dbg::type_name_impl() [T = ") - 1;
 		static constexpr size_t SUFFIX_LENGTH = sizeof("]") - 1;
 #elif defined(__GNUC__) && !defined(__clang__)
 #define DBG_MACRO_PRETTY_FUNCTION __PRETTY_FUNCTION__
 		static constexpr size_t PREFIX_LENGTH =
-			sizeof("const char* dbg_macro::type_name_impl() [with T = ") - 1;
+			sizeof("const char* dbg::type_name_impl() [with T = ") - 1;
 		static constexpr size_t SUFFIX_LENGTH = sizeof("]") - 1;
 #elif defined(_MSC_VER)
 #define DBG_MACRO_PRETTY_FUNCTION __FUNCSIG__
 		static constexpr size_t PREFIX_LENGTH =
-			sizeof("const char *__cdecl dbg_macro::type_name_impl<") - 1;
+			sizeof("const char *__cdecl dbg::type_name_impl<") - 1;
 		static constexpr size_t SUFFIX_LENGTH = sizeof(">(void)") - 1;
 #else
 #error "This compiler is currently not supported by dbg_macro."
 #endif
 
 	} // namespace pretty_function
+
+	// Formatting helpers
+
+	template<typename T>
+	struct print_formatted {
+		static_assert(std::is_integral<T>::value,
+					  "Only integral types are supported.");
+
+		print_formatted(T value, int numeric_base)
+			: inner(value), base(numeric_base) {}
+
+		operator T() const { return inner; }
+
+		const char *prefix() const {
+			switch(base) {
+			case 8:
+				return "0o";
+			case 16:
+				return "0x";
+			case 2:
+				return "0b";
+			default:
+				return "";
+			}
+		}
+
+		T inner;
+		int base;
+	};
+
+	template<typename T>
+	print_formatted<T> hex(T value) {
+		return print_formatted<T>{value, 16};
+	}
+
+	template<typename T>
+	print_formatted<T> oct(T value) {
+		return print_formatted<T>{value, 8};
+	}
+
+	template<typename T>
+	print_formatted<T> bin(T value) {
+		return print_formatted<T>{value, 2};
+	}
 
 	// Implementation of 'type_name<T>()'
 
@@ -163,6 +225,34 @@ namespace dbg_macro {
 		return "std::vector<" + type_name<T>() + ">";
 	}
 
+	template<typename T1, typename T2>
+	std::string get_type_name(type_tag<std::pair<T1, T2>>) {
+		return "std::pair<" + type_name<T1>() + ", " + type_name<T2>() + ">";
+	}
+
+	template<typename... T>
+	std::string type_list_to_string() {
+		std::string result;
+		auto unused = {(result += type_name<T>() + ", ", 0)..., 0};
+		static_cast<void>(unused);
+
+		if(sizeof...(T) > 0) {
+			result.pop_back();
+			result.pop_back();
+		}
+		return result;
+	}
+
+	template<typename... T>
+	std::string get_type_name(type_tag<std::tuple<T...>>) {
+		return "std::tuple<" + type_list_to_string<T...>() + ">";
+	}
+
+	template<typename T>
+	inline std::string get_type_name(type_tag<print_formatted<T>>) {
+		return type_name<T>();
+	}
+
 	// Implementation of 'is_detected' to specialize for container-like types
 
 	namespace detail_detector {
@@ -204,7 +294,7 @@ namespace dbg_macro {
 		namespace {
 			using std::begin;
 			using std::end;
-#if __cplusplus < 201703L
+#if DBG_MACRO_CXX_STANDARD < 17
 			template<typename T>
 			constexpr auto size(const T &c) -> decltype(c.size()) {
 				return c.size();
@@ -228,10 +318,14 @@ namespace dbg_macro {
 		using detect_size_t = decltype(detail::size(std::declval<T>()));
 
 		template<typename T>
-		struct has_begin_end_size {
-			static constexpr bool value = is_detected<detect_begin_t, T>::value &&
-										  is_detected<detect_end_t, T>::value &&
-										  is_detected<detect_size_t, T>::value;
+		struct is_container {
+			static constexpr bool value =
+				is_detected<detect_begin_t, T>::value &&
+				is_detected<detect_end_t, T>::value &&
+				is_detected<detect_size_t, T>::value &&
+				!std::is_same<std::string,
+							  typename std::remove_cv<
+								  typename std::remove_reference<T>::type>::type>::value;
 		};
 
 		template<typename T>
@@ -242,6 +336,15 @@ namespace dbg_macro {
 		struct has_ostream_operator : is_detected<ostream_operator_t, T> {};
 
 	} // namespace detail
+
+	// Helper to dbg(…)-print types
+	template<typename T>
+	struct print_type {};
+
+	template<typename T>
+	print_type<T> type() {
+		return print_type<T>{};
+	}
 
 	// Specializations of "pretty_print"
 
@@ -257,7 +360,7 @@ namespace dbg_macro {
 	}
 
 	template<typename T>
-	inline typename std::enable_if<!detail::has_begin_end_size<const T &>::value &&
+	inline typename std::enable_if<!detail::is_container<const T &>::value &&
 									   !std::is_enum<T>::value,
 								   bool>::type
 	pretty_print(std::ostream &stream, const T &value) {
@@ -354,11 +457,98 @@ namespace dbg_macro {
 		return true;
 	}
 
+	template<>
+	inline bool pretty_print(std::ostream &stream, const time &) {
+		using namespace std::chrono;
+
+		const auto now = system_clock::now();
+		const auto us =
+			duration_cast<microseconds>(now.time_since_epoch()).count() % 1000000;
+		const auto hms = system_clock::to_time_t(now);
+		const std::tm *tm = std::localtime(&hms);
+		stream << "current time = " << std::put_time(tm, "%H:%M:%S") << '.'
+			   << std::setw(6) << std::setfill('0') << us;
+
+		return false;
+	}
+
+	// Converts decimal integer to binary string
+	template<typename T>
+	std::string decimalToBinary(T n) {
+		const size_t length = 8 * sizeof(T);
+		std::string toRet;
+		toRet.resize(length);
+
+		for(size_t i = 0; i < length; ++i) {
+			const auto bit_at_index_i = (n >> i) & 1;
+			toRet[length - 1 - i] = bit_at_index_i + '0';
+		}
+
+		return toRet;
+	}
+
+	template<typename T>
+	inline bool pretty_print(std::ostream &stream,
+							 const print_formatted<T> &value) {
+		if(value.inner < 0) {
+			stream << "-";
+		}
+		stream << value.prefix();
+
+		// Print using setbase
+		if(value.base != 2) {
+			stream << std::setw(sizeof(T)) << std::setfill('0')
+				   << std::setbase(value.base) << std::uppercase;
+
+			if(value.inner >= 0) {
+				// The '+' sign makes sure that a uint_8 is printed as a number
+				stream << +value.inner;
+			} else {
+				using unsigned_type = typename std::make_unsigned<T>::type;
+				stream << +(static_cast<unsigned_type>(-(value.inner + 1)) + 1);
+			}
+		} else {
+			// Print for binary
+			if(value.inner >= 0) {
+				stream << decimalToBinary(value.inner);
+			} else {
+				using unsigned_type = typename std::make_unsigned<T>::type;
+				stream << decimalToBinary<unsigned_type>(
+					static_cast<unsigned_type>(-(value.inner + 1)) + 1);
+			}
+		}
+
+		return true;
+	}
+
+	template<typename T>
+	inline bool pretty_print(std::ostream &stream, const print_type<T> &) {
+		stream << type_name<T>();
+
+		stream << " [sizeof: " << sizeof(T) << " byte, ";
+
+		stream << "trivial: ";
+		if(std::is_trivial<T>::value) {
+			stream << "yes";
+		} else {
+			stream << "no";
+		}
+
+		stream << ", standard layout: ";
+		if(std::is_standard_layout<T>::value) {
+			stream << "yes";
+		} else {
+			stream << "no";
+		}
+		stream << "]";
+
+		return false;
+	}
+
 	template<typename Container>
-	inline
-		typename std::enable_if<detail::has_begin_end_size<const Container &>::value,
-								bool>::type
-		pretty_print(std::ostream &stream, const Container &value) {
+	inline typename std::enable_if<detail::is_container<const Container &>::value,
+								   bool>::type
+	pretty_print(std::ostream &stream, const Container &value) {
 		stream << "{";
 		const size_t size = detail::size(value);
 		const size_t n = std::min(size_t{10}, size);
@@ -395,7 +585,17 @@ namespace dbg_macro {
 		return true;
 	}
 
-#if __cplusplus >= 201703L
+	template<typename T1, typename T2>
+	inline bool pretty_print(std::ostream &stream, const std::pair<T1, T2> &value) {
+		stream << "{";
+		pretty_print(stream, value.first);
+		stream << ", ";
+		pretty_print(stream, value.second);
+		stream << "}";
+		return true;
+	}
+
+#if DBG_MACRO_CXX_STANDARD >= 17
 
 	template<typename T>
 	inline bool pretty_print(std::ostream &stream, const std::optional<T> &value) {
@@ -420,42 +620,67 @@ namespace dbg_macro {
 		return true;
 	}
 
-#endif // __cplusplus >= 201703L
+#endif
+
+	template<typename T, typename... U>
+	struct last {
+		using type = typename last<U...>::type;
+	};
+
+	template<typename T>
+	struct last<T> {
+		using type = T;
+	};
+
+	template<typename... T>
+	using last_t = typename last<T...>::type;
 
 	class DebugOutput {
 	public:
-		DebugOutput(const char *filepath,
-					int line,
-					const char *function_name,
-					const char *expression)
-			: m_use_colorized_output(isColorizedOutputEnabled()),
-			  m_filepath(filepath),
-			  m_line(line),
-			  m_function_name(function_name),
-			  m_expression(expression) {
-			const std::size_t path_length = m_filepath.length();
+		// Helper alias to avoid obscure type `const char* const*` in signature.
+		using expr_t = const char *;
+
+		DebugOutput(const char *filepath, int line, const char *function_name)
+			: m_use_colorized_output(isColorizedOutputEnabled()) {
+			std::string path = filepath;
+			const std::size_t path_length = path.length();
 			if(path_length > MAX_PATH_LENGTH) {
-				m_filepath = ".." + m_filepath.substr(path_length - MAX_PATH_LENGTH,
-													  MAX_PATH_LENGTH);
+				path = ".." + path.substr(path_length - MAX_PATH_LENGTH, MAX_PATH_LENGTH);
 			}
+			std::stringstream ss;
+			ss << ansi(ANSI_DEBUG) << "[" << path << ":" << line << " ("
+			   << function_name << ")] " << ansi(ANSI_RESET);
+			m_location = ss.str();
 		}
 
+		template<typename... T>
+		auto print(std::initializer_list<expr_t> exprs,
+				   std::initializer_list<std::string> types,
+				   T &&... values) -> last_t<T...> {
+			if(exprs.size() != sizeof...(values)) {
+				std::cerr
+					<< m_location << ansi(ANSI_WARN)
+					<< "The number of arguments mismatch, please check unprotected comma"
+					<< ansi(ANSI_RESET) << std::endl;
+			}
+			return print_impl(exprs.begin(), types.begin(), std::forward<T>(values)...);
+		}
+
+	private:
 		template<typename T>
-		T &&print(const std::string &type, T &&value) const {
+		T &&print_impl(const expr_t *expr, const std::string *type, T &&value) {
 			const T &ref = value;
 			std::stringstream stream_value;
 			const bool print_expr_and_type = pretty_print(stream_value, ref);
 
 			std::stringstream output;
-			output << ansi(ANSI_DEBUG) << "[" << m_filepath << ":" << m_line << " ("
-				   << m_function_name << ")] " << ansi(ANSI_RESET);
+			output << m_location;
 			if(print_expr_and_type) {
-				output << ansi(ANSI_EXPRESSION) << m_expression << ansi(ANSI_RESET)
-					   << " = ";
+				output << ansi(ANSI_EXPRESSION) << *expr << ansi(ANSI_RESET) << " = ";
 			}
 			output << ansi(ANSI_VALUE) << stream_value.str() << ansi(ANSI_RESET);
 			if(print_expr_and_type) {
-				output << " (" << ansi(ANSI_TYPE) << type << ansi(ANSI_RESET) << ")";
+				output << " (" << ansi(ANSI_TYPE) << *type << ansi(ANSI_RESET) << ")";
 			}
 			output << std::endl;
 			std::cerr << output.str();
@@ -463,7 +688,15 @@ namespace dbg_macro {
 			return std::forward<T>(value);
 		}
 
-	private:
+		template<typename T, typename... U>
+		auto print_impl(const expr_t *exprs,
+						const std::string *types,
+						T &&value,
+						U &&... rest) -> last_t<T, U...> {
+			print_impl(exprs, types, std::forward<T>(value));
+			return print_impl(exprs + 1, types + 1, std::forward<U>(rest)...);
+		}
+
 		const char *ansi(const char *code) const {
 			if(m_use_colorized_output) {
 				return code;
@@ -474,15 +707,13 @@ namespace dbg_macro {
 
 		const bool m_use_colorized_output;
 
-		std::string m_filepath;
-		const int m_line;
-		const std::string m_function_name;
-		const std::string m_expression;
+		std::string m_location;
 
 		static constexpr std::size_t MAX_PATH_LENGTH = 20;
 
 		static constexpr const char *const ANSI_EMPTY = "";
 		static constexpr const char *const ANSI_DEBUG = "\x1b[02m";
+		static constexpr const char *const ANSI_WARN = "\x1b[33m";
 		static constexpr const char *const ANSI_EXPRESSION = "\x1b[36m";
 		static constexpr const char *const ANSI_VALUE = "\x1b[01m";
 		static constexpr const char *const ANSI_TYPE = "\x1b[32m";
@@ -496,16 +727,75 @@ namespace dbg_macro {
 		return std::forward<T>(t);
 	}
 
-} // namespace dbg_macro
+	template<typename T, typename... U>
+	auto identity(T &&, U &&... u) -> last_t<U...> {
+		return identity(std::forward<U>(u)...);
+	}
+
+} // namespace dbg
 
 #ifndef DBG_MACRO_DISABLE
-// We use a variadic macro to support commas inside expressions (e.g.
-// initializer lists):
-#define dbg(...)                                                       \
-	dbg_macro::DebugOutput(__FILE__, __LINE__, __func__, #__VA_ARGS__) \
-		.print(dbg_macro::type_name<decltype(__VA_ARGS__)>(), (__VA_ARGS__))
+
+// Force expanding argument with commas for MSVC, ref:
+// https://stackoverflow.com/questions/35210637/macro-expansion-argument-with-commas
+// Note that "args" should be a tuple with parentheses, such as "(e1, e2, ...)".
+#define DBG_IDENTITY(x) x
+#define DBG_CALL(fn, args) DBG_IDENTITY(fn args)
+
+#define DBG_CAT_IMPL(_1, _2) _1##_2
+#define DBG_CAT(_1, _2) DBG_CAT_IMPL(_1, _2)
+
+#define DBG_16TH_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, \
+					  _14, _15, _16, ...)                                     \
+	_16
+#define DBG_16TH(args) DBG_CALL(DBG_16TH_IMPL, args)
+#define DBG_NARG(...) \
+	DBG_16TH((__VA_ARGS__, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+
+// DBG_VARIADIC_CALL(fn, data, e1, e2, ...) => fn_N(data, (e1, e2, ...))
+#define DBG_VARIADIC_CALL(fn, data, ...)  \
+	DBG_CAT(fn##_, DBG_NARG(__VA_ARGS__)) \
+	(data, (__VA_ARGS__))
+
+// (e1, e2, e3, ...) => e1
+#define DBG_HEAD_IMPL(_1, ...) _1
+#define DBG_HEAD(args) DBG_CALL(DBG_HEAD_IMPL, args)
+
+// (e1, e2, e3, ...) => (e2, e3, ...)
+#define DBG_TAIL_IMPL(_1, ...) (__VA_ARGS__)
+#define DBG_TAIL(args) DBG_CALL(DBG_TAIL_IMPL, args)
+
+#define DBG_MAP_1(fn, args) DBG_CALL(fn, args)
+#define DBG_MAP_2(fn, args) fn(DBG_HEAD(args)), DBG_MAP_1(fn, DBG_TAIL(args))
+#define DBG_MAP_3(fn, args) fn(DBG_HEAD(args)), DBG_MAP_2(fn, DBG_TAIL(args))
+#define DBG_MAP_4(fn, args) fn(DBG_HEAD(args)), DBG_MAP_3(fn, DBG_TAIL(args))
+#define DBG_MAP_5(fn, args) fn(DBG_HEAD(args)), DBG_MAP_4(fn, DBG_TAIL(args))
+#define DBG_MAP_6(fn, args) fn(DBG_HEAD(args)), DBG_MAP_5(fn, DBG_TAIL(args))
+#define DBG_MAP_7(fn, args) fn(DBG_HEAD(args)), DBG_MAP_6(fn, DBG_TAIL(args))
+#define DBG_MAP_8(fn, args) fn(DBG_HEAD(args)), DBG_MAP_7(fn, DBG_TAIL(args))
+#define DBG_MAP_9(fn, args) fn(DBG_HEAD(args)), DBG_MAP_8(fn, DBG_TAIL(args))
+#define DBG_MAP_10(fn, args) fn(DBG_HEAD(args)), DBG_MAP_9(fn, DBG_TAIL(args))
+#define DBG_MAP_11(fn, args) fn(DBG_HEAD(args)), DBG_MAP_10(fn, DBG_TAIL(args))
+#define DBG_MAP_12(fn, args) fn(DBG_HEAD(args)), DBG_MAP_11(fn, DBG_TAIL(args))
+#define DBG_MAP_13(fn, args) fn(DBG_HEAD(args)), DBG_MAP_12(fn, DBG_TAIL(args))
+#define DBG_MAP_14(fn, args) fn(DBG_HEAD(args)), DBG_MAP_13(fn, DBG_TAIL(args))
+#define DBG_MAP_15(fn, args) fn(DBG_HEAD(args)), DBG_MAP_14(fn, DBG_TAIL(args))
+#define DBG_MAP_16(fn, args) fn(DBG_HEAD(args)), DBG_MAP_15(fn, DBG_TAIL(args))
+
+// DBG_MAP(fn, e1, e2, e3, ...) => fn(e1), fn(e2), fn(e3), ...
+#define DBG_MAP(fn, ...) DBG_VARIADIC_CALL(DBG_MAP, fn, __VA_ARGS__)
+
+#define DBG_STRINGIFY_IMPL(x) #x
+#define DBG_STRINGIFY(x) DBG_STRINGIFY_IMPL(x)
+
+#define DBG_TYPE_NAME(x) dbg::type_name<decltype(x)>()
+
+#define dbg(...)                                      \
+	dbg::DebugOutput(__FILE__, __LINE__, __func__)    \
+		.print({DBG_MAP(DBG_STRINGIFY, __VA_ARGS__)}, \
+			   {DBG_MAP(DBG_TYPE_NAME, __VA_ARGS__)}, __VA_ARGS__)
 #else
-#define dbg(...) dbg_macro::identity(__VA_ARGS__)
+#define dbg(...) dbg::identity(__VA_ARGS__)
 #endif // DBG_MACRO_DISABLE
 
 #endif // DBG_MACRO_DBG_H
