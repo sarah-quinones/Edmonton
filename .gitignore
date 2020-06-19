@@ -32,3 +32,6 @@
 *.app
 *.pdb
 *.ilk
+
+# Folders
+.vscode
