@@ -5,9 +5,7 @@ using namespace std;
 using boost::multiprecision::cpp_int;
 
 /*
-The lattice in this problem is just a very cleverly combinatorics question. So we just need to calculate the factorials. 
-The factorial function is a bit updated to store previous results so it goes quicker.
-Using boost's large nber library so it makes it easier for us.
+The lattice in this problem is just a very cleverly disguised combinatorics question. So we just need to calculate the factorials. 
 */
 
 // Generate the n'th term for the factorial sequence.
