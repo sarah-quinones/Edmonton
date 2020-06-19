@@ -12,7 +12,9 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-I",
+                "C:/Users/Rietty/Documents/Useful/boost"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
