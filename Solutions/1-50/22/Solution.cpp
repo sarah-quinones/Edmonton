@@ -6,8 +6,8 @@
 
 using namespace std;
 
-// Function that returns the letter score of a given word.
-int letterScore(string_view s) {
+// Function that returns the word score of a given word by adding up letter values.
+int wordScore(string_view s) {
 	int sum = 0;
 	for(unsigned int i = 0; i < s.length(); i++) {
 		sum += s[i] - 'A' + 1;
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 	// Go through the whole vector and sum up the scores.
 	int list_sum = 0;
 	for(unsigned int i = 0; i < names.size(); i++) {
-		list_sum += ((i + 1) * letterScore(names[i]));
+		list_sum += ((i + 1) * wordScore(names[i]));
 	}
 	cout << list_sum << endl;
 	input.close();
