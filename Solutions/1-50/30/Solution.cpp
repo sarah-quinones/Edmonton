@@ -4,12 +4,6 @@
 
 using namespace std;
 
-/*
-The upperbound on the numbers we need to check will be given by 6 * 9^5, since we need need to get a 6 digit number.
-The lowerbound will be two since we would like to exclude 1 from the results. If we cache the powers of the digits,
-There will be a minor speed increase in advance and we can just look them up.
-*/
-
 int main(int argc, char *argv[]) {
 	// Set up our lookup cache.
 	vector<int> cache(10);

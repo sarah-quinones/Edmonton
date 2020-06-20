@@ -3,11 +3,6 @@
 
 using namespace std;
 
-/*
-If our resulting numerator and denominator are 1 <= n < d <= 9 and the number we are cancelling are 1 <= c <= 9. Then n/d < 1.
-After that we know our solution space is fairly straight forward with some algebraic manipulation.
-*/
-
 int main(int argc, char *argv[]) {
 	unsigned int np = 1, dp = 1;
 	for(unsigned int c = 1; c <= 9; c++) {
